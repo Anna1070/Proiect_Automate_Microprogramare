@@ -1,13 +1,14 @@
 #include <SPI.h>
 #include <MFRC522.h>
 
-constexpr uint8_t RST_PIN = D3;
-constexpr uint8_t SS_PIN = D4;
+#define  RST_PIN D3
+#define SS_PIN D4
 
 MFRC522 rfid(SS_PIN,RST_PIN);
 MFRC522::MIFARE_Key key;
 
-String tag; //variabila in care stocam serial number-ul
+byte readCard[4];
+String tag = ""; //variabila in care stocam serial number-ul
 
 void setup() {
   // put your setup code here, to run once:
@@ -33,14 +34,14 @@ void loop() {
   }
 
   Serial.print("Card UID: ");
+  Serial.println();
+
   tag = "";
-
   for (byte i = 0; i < rfid.uid.size; i++) {
+    tag += String(rfid.uid.uidByte[i] < 0x10 ? "0" : "");
     tag += String(rfid.uid.uidByte[i], HEX);
-    tag += " ";
   }
-
   Serial.println(tag);
   rfid.PICC_HaltA();
-  rfid.PCD_StopCrypto1();
+  return;
 }
