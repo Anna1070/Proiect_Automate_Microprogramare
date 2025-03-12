@@ -5,7 +5,7 @@ namespace Colectare_pubela.Models
     public class DataStructure
     {
         [Key]
-        public Guid Id { get; set; }
+        public Guid Id { get; set; } = Guid.NewGuid();
 
         [Required]
         public string TagId { get; set; }

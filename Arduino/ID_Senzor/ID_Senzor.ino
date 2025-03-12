@@ -2,11 +2,12 @@
 #include <MFRC522.h>
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
+#include <time.h>
 
 #define  RST_PIN D3
 #define SS_PIN D4
 
-#define SERVER_IP "10.14.10.113:3000"
+#define SERVER_IP "10.14.10.39:5154"
 #ifndef STASSID
 #define STASSID "OMiLAB"
 #define STAPSK "digifofulbs"
@@ -17,6 +18,11 @@ MFRC522::MIFARE_Key key;
 
 byte readCard[4];
 String tag = ""; //variabila in care stocam serial number-ul
+
+const char* ntpServer = "pool.ntp.org";
+const long gmtOffset_sec = 0;  // Adjust this according to your timezone
+const int daylightOffset_sec = 3600; // Adjust for daylight saving time if needed
+
 
 void setup() {
   // put your setup code here, to run once:
@@ -37,6 +43,18 @@ void setup() {
   Serial.println("");
   Serial.print("Connected! IP address: ");
   Serial.println(WiFi.localIP());
+
+   // Initialize NTP for time synchronization
+  configTime(gmtOffset_sec, daylightOffset_sec, ntpServer);
+  
+  // Wait for time to be set
+  Serial.print("Waiting for NTP time sync");
+  while (time(nullptr) < 100000) { // Wait for valid time
+    Serial.print(".");
+    delay(500);
+  }
+  Serial.println();
+  Serial.println("Time synchronized!");
 }
 
 void loop() {
@@ -63,8 +81,17 @@ void loop() {
     tag += String(rfid.uid.uidByte[i] < 0x10 ? "0" : "");
     tag += String(rfid.uid.uidByte[i], HEX);
   }
+
   Serial.println(tag);
+
   rfid.PICC_HaltA();
+  time_t now = time(nullptr);
+  char timeStr[25];
+  strftime(timeStr, sizeof(timeStr), "%Y-%m-%d_T%H:%M:%S", localtime(&now));
+  String collectionTime = String(timeStr);
+
+  Serial.print("Collection Time: ");
+  Serial.println(collectionTime);
 
   // wait for WiFi connection
   if ((WiFi.status() == WL_CONNECTED)) {
@@ -79,7 +106,7 @@ void loop() {
 
     Serial.print("[HTTP] POST...\n");
     // start connection and send HTTP header and body
-    int httpCode = http.POST("{\"id\":\"" + tag + "\", \"name\":\"Ana si Paula\"}");
+    int httpCode = http.POST("{\"TagId\":\"" + tag + "\", \"CollectionTime\":\"" + collectionTime + "\"}");
 
     // httpCode will be negative on error
     if (httpCode > 0) {
