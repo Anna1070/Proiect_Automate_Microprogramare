@@ -1,8 +1,16 @@
 #include <SPI.h>
 #include <MFRC522.h>
+#include <ESP8266WiFi.h>
+#include <ESP8266HTTPClient.h>
 
 #define  RST_PIN D3
 #define SS_PIN D4
+
+#define SERVER_IP "10.14.10.113:3000"
+#ifndef STASSID
+#define STASSID "OMiLAB"
+#define STAPSK "digifofulbs"
+#endif
 
 MFRC522 rfid(SS_PIN,RST_PIN);
 MFRC522::MIFARE_Key key;
@@ -15,6 +23,20 @@ void setup() {
   Serial.begin(9600);
   SPI.begin();
   rfid.PCD_Init();
+
+  Serial.println();
+  Serial.println();
+  Serial.println();
+
+  WiFi.begin(STASSID, STAPSK);
+
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(500);
+    Serial.print(".");
+  }
+  Serial.println("");
+  Serial.print("Connected! IP address: ");
+  Serial.println(WiFi.localIP());
 }
 
 void loop() {
@@ -43,5 +65,40 @@ void loop() {
   }
   Serial.println(tag);
   rfid.PICC_HaltA();
+
+  // wait for WiFi connection
+  if ((WiFi.status() == WL_CONNECTED)) {
+
+    WiFiClient client;
+    HTTPClient http;
+
+    Serial.print("[HTTP] begin...\n");
+    // configure traged server and url
+    http.begin(client, "http://" SERVER_IP "/api/data");  // HTTP
+    http.addHeader("Content-Type", "application/json");
+
+    Serial.print("[HTTP] POST...\n");
+    // start connection and send HTTP header and body
+    int httpCode = http.POST("{\"id\":\"" + tag + "\", \"name\":\"Ana si Paula\"}");
+
+    // httpCode will be negative on error
+    if (httpCode > 0) {
+      // HTTP header has been send and Server response header has been handled
+      Serial.printf("[HTTP] POST... code: %d\n", httpCode);
+
+      // file found at server
+      if (httpCode == HTTP_CODE_OK) {
+        const String& payload = http.getString();
+        Serial.println("received payload:\n<<");
+        Serial.println(payload);
+        Serial.println(">>");
+      }
+    } else {
+      Serial.printf("[HTTP] POST... failed, error: %s\n", http.errorToString(httpCode).c_str());
+    }
+
+    http.end();
+  }
+
   return;
 }
