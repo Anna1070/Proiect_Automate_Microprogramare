@@ -83,11 +83,11 @@ void loop() {
   }
 
   Serial.println(tag);
-
   rfid.PICC_HaltA();
+  
   time_t now = time(nullptr);
   char timeStr[25];
-  strftime(timeStr, sizeof(timeStr), "%Y-%m-%d_T%H:%M:%S", localtime(&now));
+  strftime(timeStr, sizeof(timeStr), "%Y-%m-%dT%H:%M:%S", localtime(&now));
   String collectionTime = String(timeStr);
 
   Serial.print("Collection Time: ");
