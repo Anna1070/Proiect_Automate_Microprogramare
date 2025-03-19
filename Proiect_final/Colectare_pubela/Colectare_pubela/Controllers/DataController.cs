@@ -30,5 +30,6 @@ namespace Colectare_pubela.Controllers
         {
             return View();
         }
+
     }
 }

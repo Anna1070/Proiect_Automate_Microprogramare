@@ -1,0 +1,40 @@
+﻿@model Colectare_pubela.Models.Cetateni
+
+@{
+    ViewData["Title"] = "Adauga Cetatean";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <form asp-action="Create" method="post">
+        <div class="form-group">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Surname" class="control-label"></label>
+            <input asp-for="Surname" class="form-control" />
+            <span asp-validation-for="Surname" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Email" class="control-label"></label>
+            <input asp-for="Email" class="form-control" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="CNP" class="control-label"></label>
+            <input asp-for="CNP" class="form-control" />
+            <span asp-validation-for="CNP" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Adaugă Cetățean</button>
+    </form>
+</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

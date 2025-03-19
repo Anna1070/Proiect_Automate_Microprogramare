@@ -1,8 +1,23 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model Colectare_pubela.Models.Cetateni
+
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container" style="height: 100vh;">
+    <div class="row justify-content-center align-items-center" style="height: 100%;">
+        <div class="col-12 col-md-6 w-75">
+            <div class="btn-group-vertical w-100">
+                <a href="@Url.Action("AdaugaCetatean", "Home")" class="btn btn-primary btn-sm mb-4 w-100">Adaugă Cetățean</a>
+                <button class="btn btn-secondary btn-sm mb-4 w-100">Buton 2</button>
+                <button class="btn btn-success btn-sm mb-4 w-100">Buton 3</button>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
