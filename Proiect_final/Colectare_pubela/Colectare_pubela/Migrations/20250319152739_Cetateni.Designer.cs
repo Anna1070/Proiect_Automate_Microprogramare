@@ -3,6 +3,7 @@ using System;
 using Colectare_pubela.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Colectare_pubela.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250319152739_Cetateni")]
+    partial class Cetateni
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
@@ -47,7 +50,7 @@ namespace Colectare_pubela.Migrations
                     b.ToTable("Cetateni");
                 });
 
-            modelBuilder.Entity("Colectare_pubela.Models.Colectari", b =>
+            modelBuilder.Entity("Colectare_pubela.Models.DataStructure", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -63,7 +66,7 @@ namespace Colectare_pubela.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Colectari");
+                    b.ToTable("DataStructure");
                 });
 
             modelBuilder.Entity("Colectare_pubela.Models.Pubela", b =>
