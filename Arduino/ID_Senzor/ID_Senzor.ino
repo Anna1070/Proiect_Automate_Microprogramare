@@ -7,7 +7,8 @@
 #define  RST_PIN D3
 #define SS_PIN D4
 
-#define SERVER_IP "10.14.10.39:5154"
+//10.14.10.39
+#define SERVER_IP "10.14.11.101:5154"
 #ifndef STASSID
 #define STASSID "OMiLAB"
 #define STAPSK "digifofulbs"
