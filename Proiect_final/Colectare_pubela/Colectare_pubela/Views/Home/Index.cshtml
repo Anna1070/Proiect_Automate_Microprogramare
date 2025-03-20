@@ -4,13 +4,19 @@
     ViewData["Title"] = "Dashboard";
 }
 
-<div class="container" style="height: 100vh;">
-    <div class="row justify-content-center align-items-center" style="height: 100%;">
-        <div class="col-12 col-md-6 w-75">
-            <div class="btn-group-vertical w-100">
-                <a href="@Url.Action("AdaugaCetatean", "Home")" class="btn btn-primary btn-sm mb-4 w-100">Adaugă Cetățean</a>
-                <button class="btn btn-secondary btn-sm mb-4 w-100">Buton 2</button>
-                <button class="btn btn-success btn-sm mb-4 w-100">Buton 3</button>
+<div class="container-fluid mt-4" style="height: 100vh;">
+    <div class="row" style="height: 20%;">
+        <div class="col-12 d-flex justify-content-center align-items-center bg-primary text-white p-3 rounded shadow">
+            <h2>Welcome Admin !</h2>
+        </div>
+    </div>
+
+    <div class="row justify-content-center align-items-center" style="height: 60%;">
+        <div class="col-12 col-md-6 col-lg-4">
+            <div class="btn-group-vertical w-100 text-center">
+                <button onclick="location.href='@Url.Action("AdaugaCetatean", "Home")'" class="btn rounded btn-primary shadow btn-lg mb-4 w-100">Add Citizen</button>
+                <button class="btn rounded btn-secondary shadow btn-lg mb-4 w-100">Button 2</button>
+                <button class="btn rounded btn-success shadow btn-lg mb-4 w-100">Button 3</button>
             </div>
         </div>
     </div>

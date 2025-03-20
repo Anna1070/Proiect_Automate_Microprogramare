@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Colectare_pubela.Models
 {
@@ -7,6 +6,5 @@ namespace Colectare_pubela.Models
     {
         [Key]
         public string TagId { get; set; }
-
     }
 }

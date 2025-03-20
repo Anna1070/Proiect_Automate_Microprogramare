@@ -1,16 +1,19 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Colectare_pubela.Models;
+using Colectare_pubela.Data;
 
 namespace Colectare_pubela.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
+    private readonly AppDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(ILogger<HomeController> logger, AppDbContext context)
     {
         _logger = logger;
+        _context = context;
     }
 
     public IActionResult Index()
@@ -23,10 +26,18 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult Privacy()
+    [HttpPost]
+    public IActionResult AdaugaCetatean(Cetateni cetatean)
     {
-        return View();
+        if (ModelState.IsValid)
+        {
+            _context.Cetateni.Add(cetatean);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        return View(cetatean);
     }
+
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
