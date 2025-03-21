@@ -15,10 +15,16 @@ namespace Colectare_pubela.Data
             modelBuilder.Entity<Colectari>()
                 .Property(d => d.Id)
                 .HasDefaultValueSql("NEWID()");
+
             modelBuilder.Entity<PubeleCetateni>()
                .HasOne(pc => pc.Pubela)
                .WithMany()
                .HasForeignKey(pc => pc.TagId);
+
+            modelBuilder.Entity<PubeleCetateni>()
+                .HasOne(pc => pc.Cetatean)
+                .WithMany()
+                .HasForeignKey(pc => pc.IdCetatean);
 
             modelBuilder.Entity<PubeleCetateni>()
                 .HasOne(pc => pc.Cetatean)

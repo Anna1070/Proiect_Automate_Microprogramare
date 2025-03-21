@@ -8,15 +8,15 @@ namespace Colectare_pubela.Models
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
 
-       [Required]
+       //[Required]
        [ForeignKey("Pubela")]
        public string TagId { get; set; }
-       public Pubela Pubela { get; set; }
+       public Pubela? Pubela { get; set; }
 
-        [Required]
+        //[Required]
         [ForeignKey("Cetatean")]
         public Guid IdCetatean { get; set; }
-        public Cetateni Cetatean { get; set; }
+        public Cetateni? Cetatean { get; set; }
 
         [Required]
         [StringLength(50)]
