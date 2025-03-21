@@ -43,6 +43,12 @@ public class HomeController : Controller
         return View();
     }
 
+    public IActionResult InregistreazaColectare()
+    {
+        ViewBag.Pubele = new SelectList(_context.Pubela.ToList(), "TagId", "TagId");
+        return View();
+    }
+
     [HttpPost]
     public IActionResult AdaugaCetatean(Cetateni cetatean)
     {
@@ -96,8 +102,8 @@ public class HomeController : Controller
         }
 
         ViewBag.Cetateni = new SelectList(_context.Cetateni
-       .Select(c => new { c.Id, Fullname = c.Name + " " + c.Surname })
-       .ToList(), "Id", "Fullname");
+           .Select(c => new { c.Id, Fullname = c.Name + " " + c.Surname })
+           .ToList(), "Id", "Fullname");
 
         ViewBag.Pubele = new SelectList(_context.Pubela
             .Where(p => !_context.PubeleCetateni.Any(pc => pc.TagId == p.TagId))
@@ -106,6 +112,42 @@ public class HomeController : Controller
         return View(model);
     }
 
+    [HttpPost]
+    public IActionResult InregistreazaColectare(Colectari colectare)
+    {
+        if (ModelState.IsValid)
+        {
+            var pubelaAsignata = _context.PubeleCetateni
+             .FirstOrDefault(pc => pc.TagId == colectare.TagId);
+
+            if (pubelaAsignata == null)
+            {
+                ModelState.AddModelError("Address", "Dumpster not assigned to any address.");
+                ViewBag.Pubele = new SelectList(_context.Pubela.ToList(), "TagId", "TagId");
+                return View(colectare);
+            }
+
+            if (pubelaAsignata.Address != colectare.Address)
+            {
+                var alerta = new
+                {
+                    TagId = colectare.TagId,
+                    ColectareAddress = colectare.Address,
+                    ContractAddress = pubelaAsignata.Address,
+                    CollectionTime = colectare.CollectionTime
+                };
+
+                TempData["AlertMessage"] = $"Alert: Dumpster with Tag {alerta.TagId} was collected from {alerta.ColectareAddress} (expected: {alerta.ContractAddress}) at {alerta.CollectionTime}.";
+            }
+
+            _context.Colectari.Add(colectare);
+            _context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+        ViewBag.Pubele = new SelectList(_context.Pubela.ToList(), "TagId", "TagId");
+        return View(colectare);
+    }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()

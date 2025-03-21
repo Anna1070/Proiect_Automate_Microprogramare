@@ -1,0 +1,37 @@
+﻿@model Colectare_pubela.Models.Colectari
+
+@{
+    ViewData["Title"] = "Register Collection";
+}
+
+<h2>Register Dumpster Collection</h2>
+
+<form asp-action="InregistreazaColectare" method="post">
+    <div class="mb-4">
+        <label asp-for="TagId"></label>
+        <select asp-for="TagId" class="form-control" asp-items="ViewBag.Pubele">
+            <option value="">-- Select Dumpster --</option>
+        </select>
+        <span asp-validation-for="TagId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-4">
+        <label asp-for="CollectionTime"></label>
+        <input asp-for="CollectionTime" class="form-control" type="datetime-local" placeholder="-- Select Date --" />
+        <span asp-validation-for="CollectionTime" class="text-danger"></span>
+    </div>
+
+    <div class="mb-4">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" class="form-control" placeholder="Enter the collection address" />
+        <span asp-validation-for="Address" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Register Collection</button>
+</form>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -13,5 +13,9 @@ namespace Colectare_pubela.Models
         [Required]
         public DateTime CollectionTime { get; set; }
 
+        [Required]
+        [StringLength(50)]
+        public string Address { get; set; }
+
     }
 }

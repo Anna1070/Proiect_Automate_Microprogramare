@@ -11,12 +11,54 @@
         </div>
     </div>
 
-    <div class="row justify-content-center align-items-center" style="height: 60%;">
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="btn-group-vertical w-100 text-center">
-                <button onclick="location.href='@Url.Action("AdaugaCetatean", "Home")'" class="btn rounded btn-primary shadow btn-lg mb-4 w-100">Add Citizen</button>
-                <button onclick="location.href='@Url.Action("AdaugaPubela", "Home")'" class="btn rounded btn-secondary shadow btn-lg mb-4 w-100">Add Dumpster</button>
-                <button onclick="location.href='@Url.Action("AtribuirePubela", "Home")'"  class="btn rounded btn-success shadow btn-lg mb-4 w-100">Assign Dumpster</button>
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="card-title mb-0">Admin Actions</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-3">
+                            <button onclick="location.href='@Url.Action("AdaugaCetatean", "Home")'" class="btn btn-primary btn-lg hover-dark">
+                                Add Citizen
+                            </button>
+
+                            <button onclick="location.href='@Url.Action("AdaugaPubela", "Home")'" class="btn btn-secondary btn-lg hover-dark">
+                                Add Dumpster
+                            </button>
+
+                            <button onclick="location.href='@Url.Action("AtribuirePubela", "Home")'" class="btn btn-success btn-lg hover-dark">
+                                Assign Dumpster
+                            </button>
+
+                            <button onclick="location.href='@Url.Action("InregistreazaColectare", "Home")'" class="btn btn-warning btn-lg hover-dark">
+                                Register Collection
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-danger text-white">
+                        <h4 class="card-title mb-0">Alerts</h4>
+                    </div>
+                    <div class="card-body">
+                        @if (TempData["AlertMessage"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Alert!</strong> @TempData["AlertMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-center text-muted">No alerts at the moment.</p>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
