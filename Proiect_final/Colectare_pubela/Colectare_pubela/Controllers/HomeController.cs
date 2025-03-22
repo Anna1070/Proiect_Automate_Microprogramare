@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Colectare_pubela.Models;
 using Colectare_pubela.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Colectare_pubela.Models.ViewModels;
 
 namespace Colectare_pubela.Controllers;
 
@@ -147,6 +148,31 @@ public class HomeController : Controller
 
         ViewBag.Pubele = new SelectList(_context.Pubela.ToList(), "TagId", "TagId");
         return View(colectare);
+    }
+
+    public IActionResult ColectariCetatean()
+    {
+        var cetateni = _context.Cetateni.ToList();
+        var colectariCetateni = cetateni.Select(cetatean => new ColectariCetateanViewModel
+        {
+            CitizenId = cetatean.Id,
+            CitizenName = cetatean.Name,
+            CitizenSurname = cetatean.Surname,
+            Colectari = _context.PubeleCetateni
+            .Where(pc => pc.IdCetatean == cetatean.Id) 
+            .Join(
+                _context.Colectari, 
+                pc => pc.TagId,     
+                c => c.TagId,
+                (pc, c) => new ColectareViewModel
+                {
+                    TagId = c.TagId,
+                    CollectionTime = c.CollectionTime,
+                    Address = c.Address
+                })
+            .ToList()
+        }).ToList();
+        return View(colectariCetateni);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

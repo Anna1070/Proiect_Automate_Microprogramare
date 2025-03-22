@@ -16,6 +16,5 @@ namespace Colectare_pubela.Models
         [Required]
         [StringLength(50)]
         public string Address { get; set; }
-
     }
 }

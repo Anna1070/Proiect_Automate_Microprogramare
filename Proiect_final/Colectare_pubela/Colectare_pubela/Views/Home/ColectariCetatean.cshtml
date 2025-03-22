@@ -1,0 +1,90 @@
+﻿@using Colectare_pubela.Models.ViewModels
+
+@{
+    ViewData["Title"] = "Citizen Collections "; 
+}
+@model List<ColectariCetateanViewModel>
+
+<div class="container my-5">
+    <h2 class="text-center mb-4">Collections of all citizens</h2>
+    <div class="form-group mb-4 d-flex justify-content-center">
+        <select id="citizenSelect" class="form-select text-center bg-light w-50 mb-2">
+            <option value="all">Select all citizens</option>
+            @foreach (var cetatean in Model)
+            {
+                <option value="@cetatean.CitizenId">@cetatean.CitizenName @cetatean.CitizenSurname</option>
+            }
+        </select>
+    </div>
+
+    @if (!Model.Any())  
+    {
+        <div class="alert alert-warning text-center">
+            <strong>Notice!</strong> There are no citizens added yet.
+        </div>
+    }
+    else
+    {
+        @foreach (var cetatean in Model)
+        {
+            <div class="card mb-4 shadow-sm citizenCard p-3" id="citizenCard-@cetatean.CitizenId">
+                <div class="card-body">
+                    <h3 class="card-title text-primary mb-3">@cetatean.CitizenName @cetatean.CitizenSurname</h3>
+        
+                    @if (cetatean.Colectari.Any())
+                    {
+                        <table class="table table-bordered table-hover">
+                            <thead class="text-center table-info">
+                                <tr>
+                                    <th class="w-25">Tag ID</th>
+                                    <th class="w-25">Date of collection</th>
+                                    <th class="w-25">Collection address</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center table-light">
+                                @foreach (var colectare in cetatean.Colectari)
+                                {
+                                    <tr>
+                                        <td class="w-25">@colectare.TagId</td>
+                                        <td class="w-25">@colectare.CollectionTime.ToString("dd/MM/yyyy HH:mm")</td>
+                                        <td class="w-25">@colectare.Address</td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    } else
+                    {
+                        <div class="alert alert-info">
+                            There are no collections for this citizen.
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+    }
+</div>
+
+@section Scripts {
+    <script>
+            document.getElementById('citizenSelect').addEventListener('change', function () {
+                var selectedCitizenId = this.value;
+
+                var cards = document.querySelectorAll('.citizenCard');
+                cards.forEach(function(card) {
+                    card.style.display = 'none';
+                });
+
+                if (selectedCitizenId === "all") {
+                    cards.forEach(function(card) {
+                        card.style.display = 'block';
+                    });
+                }
+                else {
+                    var selectedCard = document.getElementById('citizenCard-' + selectedCitizenId);
+                    if (selectedCard) {
+                        selectedCard.style.display = 'block';
+                    }
+                }
+            });
+    </script>
+}
