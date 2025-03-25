@@ -24,7 +24,7 @@ public class HomeController : Controller
 
     public IActionResult InregistreazaColectare()
     {
-        ViewBag.Pubele = new SelectList(_context.Pubela.ToList(), "TagId", "TagId");
+        ViewBag.Pubele = new SelectList(_context.Pubele.ToList(), "TagId", "TagId");
         return View();
     }
 
@@ -39,7 +39,7 @@ public class HomeController : Controller
             if (pubelaAsignata == null)
             {
                 ModelState.AddModelError("Address", "Dumpster not assigned to any address.");
-                ViewBag.Pubele = new SelectList(_context.Pubela.ToList(), "TagId", "TagId");
+                ViewBag.Pubele = new SelectList(_context.Pubele.ToList(), "TagId", "TagId");
                 return View(colectare);
             }
 
@@ -56,12 +56,12 @@ public class HomeController : Controller
                 TempData["AlertMessage"] = $"Alert: Dumpster with Tag {alerta.TagId} was collected from {alerta.ColectareAddress} (expected: {alerta.ContractAddress}) at {alerta.CollectionTime}.";
             }
 
-            _context.Colectare.Add(colectare);
+            _context.Colectari.Add(colectare);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        ViewBag.Pubele = new SelectList(_context.Pubela.ToList(), "TagId", "TagId");
+        ViewBag.Pubele = new SelectList(_context.Pubele.ToList(), "TagId", "TagId");
         return View(colectare);
     }
 

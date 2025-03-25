@@ -6,10 +6,10 @@ namespace Colectare_pubela.Data
     public class AppDbContext : DbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
-        public DbSet<Colectare> Colectare { get; set;  }
-        public DbSet<Cetatean> Cetatean { get; set; }
+        public DbSet<Colectare> Colectari { get; set;  }
+        public DbSet<Cetatean> Cetateni { get; set; }
         public DbSet<PubeleCetateni> PubeleCetateni { get; set; }
-        public DbSet<Pubela> Pubela { get; set; }
+        public DbSet<Pubela> Pubele { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Colectare>()

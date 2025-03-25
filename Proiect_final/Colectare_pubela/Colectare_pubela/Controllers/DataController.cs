@@ -21,7 +21,7 @@ namespace Colectare_pubela.Controllers
             if (data == null)
                 return BadRequest("Invalid data.");
 
-            _context.Colectare.Add(data);
+            _context.Colectari.Add(data);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Data received successfully!" });

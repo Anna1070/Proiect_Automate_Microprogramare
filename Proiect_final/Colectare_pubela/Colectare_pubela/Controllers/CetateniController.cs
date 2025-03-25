@@ -23,7 +23,7 @@ namespace Colectare_pubela.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Cetatean.Add(cetatean);
+                _context.Cetateni.Add(cetatean);
                 _context.SaveChanges();
                 return RedirectToAction("Index", "Home");
             }
@@ -32,7 +32,7 @@ namespace Colectare_pubela.Controllers
 
         public IActionResult ColectariCetatean()
         {
-            var cetateni = _context.Cetatean.ToList();
+            var cetateni = _context.Cetateni.ToList();
             var colectariCetateni = cetateni.Select(cetatean => new ColectariCetateanViewModel
             {
                 CitizenId = cetatean.Id,
@@ -41,7 +41,7 @@ namespace Colectare_pubela.Controllers
                 Colectari = _context.PubeleCetateni
                 .Where(pc => pc.IdCetatean == cetatean.Id)
                 .Join(
-                    _context.Colectare,
+                    _context.Colectari,
                     pc => pc.TagId,
                     c => c.TagId,
                     (pc, c) => new ColectareViewModel

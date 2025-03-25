@@ -21,10 +21,10 @@ namespace Colectare_pubela.Controllers
 
         public IActionResult AtribuirePubela()
         {
-            ViewBag.Cetateni = new SelectList(_context.Cetatean
+            ViewBag.Cetateni = new SelectList(_context.Cetateni
                 .Select(c => new { c.Id, Fullname = c.Name + " " + c.Surname })
                 .ToList(), "Id", "Fullname");
-            ViewBag.Pubele = new SelectList(_context.Pubela
+            ViewBag.Pubele = new SelectList(_context.Pubele
                 .Where(p => !_context.PubeleCetateni.Any(pc => pc.TagId == p.TagId))
                 .ToList(), "TagId", "TagId");
 
@@ -36,7 +36,7 @@ namespace Colectare_pubela.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Pubela.Add(pubela);
+                _context.Pubele.Add(pubela);
                 _context.SaveChanges();
                 return RedirectToAction("Index", "Home");
             }
@@ -55,11 +55,11 @@ namespace Colectare_pubela.Controllers
                 {
                     ModelState.AddModelError("Address", "There is already a dumpster assigned to this address");
 
-                    ViewBag.Cetateni = new SelectList(_context.Cetatean
+                    ViewBag.Cetateni = new SelectList(_context.Cetateni
                         .Select(c => new { c.Id, Fullname = c.Name + " " + c.Surname })
                         .ToList(), "Id", "Fullname");
 
-                    ViewBag.Pubele = new SelectList(_context.Pubela
+                    ViewBag.Pubele = new SelectList(_context.Pubele
                         .Where(p => !_context.PubeleCetateni.Any(pc => pc.TagId == p.TagId))
                         .ToList(), "TagId", "TagId");
 
@@ -71,11 +71,11 @@ namespace Colectare_pubela.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            ViewBag.Cetateni = new SelectList(_context.Cetatean
+            ViewBag.Cetateni = new SelectList(_context.Cetateni
                .Select(c => new { c.Id, Fullname = c.Name + " " + c.Surname })
                .ToList(), "Id", "Fullname");
 
-            ViewBag.Pubele = new SelectList(_context.Pubela
+            ViewBag.Pubele = new SelectList(_context.Pubele
                 .Where(p => !_context.PubeleCetateni.Any(pc => pc.TagId == p.TagId))
                 .ToList(), "TagId", "TagId");
 
