@@ -16,7 +16,7 @@ namespace Colectare_pubela.Models
         //[Required]
         [ForeignKey("Cetatean")]
         public Guid IdCetatean { get; set; }
-        public Cetateni? Cetatean { get; set; }
+        public Cetatean? Cetatean { get; set; }
 
         [Required]
         [StringLength(50)]

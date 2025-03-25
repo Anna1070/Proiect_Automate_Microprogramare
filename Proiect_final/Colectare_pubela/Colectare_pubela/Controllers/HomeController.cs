@@ -34,7 +34,7 @@ public class HomeController : Controller
 
     public IActionResult AtribuirePubela()
     {
-        ViewBag.Cetateni = new SelectList(_context.Cetateni
+        ViewBag.Cetateni = new SelectList(_context.Cetatean
             .Select(c => new { c.Id, Fullname = c.Name + " " + c.Surname})
             .ToList(), "Id", "Fullname");
         ViewBag.Pubele = new SelectList(_context.Pubela
@@ -51,11 +51,11 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult AdaugaCetatean(Cetateni cetatean)
+    public IActionResult AdaugaCetatean(Cetatean cetatean)
     {
         if (ModelState.IsValid)
         {
-            _context.Cetateni.Add(cetatean);
+            _context.Cetatean.Add(cetatean);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -86,7 +86,7 @@ public class HomeController : Controller
             {
                 ModelState.AddModelError("Address", "There is already a dumpster assigned to this address");
 
-                ViewBag.Cetateni = new SelectList(_context.Cetateni
+                ViewBag.Cetateni = new SelectList(_context.Cetatean
                     .Select(c => new { c.Id, Fullname = c.Name + " " + c.Surname })
                     .ToList(), "Id", "Fullname");
 
@@ -102,7 +102,7 @@ public class HomeController : Controller
             return RedirectToAction("Index");
         }
 
-        ViewBag.Cetateni = new SelectList(_context.Cetateni
+        ViewBag.Cetateni = new SelectList(_context.Cetatean
            .Select(c => new { c.Id, Fullname = c.Name + " " + c.Surname })
            .ToList(), "Id", "Fullname");
 
@@ -114,7 +114,7 @@ public class HomeController : Controller
     }
 
     [HttpPost]
-    public IActionResult InregistreazaColectare(Colectari colectare)
+    public IActionResult InregistreazaColectare(Colectare colectare)
     {
         if (ModelState.IsValid)
         {
@@ -141,7 +141,7 @@ public class HomeController : Controller
                 TempData["AlertMessage"] = $"Alert: Dumpster with Tag {alerta.TagId} was collected from {alerta.ColectareAddress} (expected: {alerta.ContractAddress}) at {alerta.CollectionTime}.";
             }
 
-            _context.Colectari.Add(colectare);
+            _context.Colectare.Add(colectare);
             _context.SaveChanges();
             return RedirectToAction("Index");
         }
@@ -152,7 +152,7 @@ public class HomeController : Controller
 
     public IActionResult ColectariCetatean()
     {
-        var cetateni = _context.Cetateni.ToList();
+        var cetateni = _context.Cetatean.ToList();
         var colectariCetateni = cetateni.Select(cetatean => new ColectariCetateanViewModel
         {
             CitizenId = cetatean.Id,
@@ -161,7 +161,7 @@ public class HomeController : Controller
             Colectari = _context.PubeleCetateni
             .Where(pc => pc.IdCetatean == cetatean.Id) 
             .Join(
-                _context.Colectari, 
+                _context.Colectare, 
                 pc => pc.TagId,     
                 c => c.TagId,
                 (pc, c) => new ColectareViewModel

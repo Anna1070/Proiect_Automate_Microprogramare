@@ -16,12 +16,12 @@ namespace Colectare_pubela.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostData([FromBody] Colectari data)
+        public async Task<IActionResult> PostData([FromBody] Colectare data)
         {
             if (data == null)
                 return BadRequest("Invalid data.");
 
-            _context.Colectari.Add(data);
+            _context.Colectare.Add(data);
             await _context.SaveChangesAsync();
 
             return Ok(new { message = "Data received successfully!" });

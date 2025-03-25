@@ -2,7 +2,7 @@
 
 namespace Colectare_pubela.Models
 {
-    public class Cetateni
+    public class Cetatean
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
