@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using Colectare_pubela.Models;
 using Colectare_pubela.Data;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Colectare_pubela.Models.ViewModels;
 
 namespace Colectare_pubela.Controllers;
 
@@ -23,94 +22,10 @@ public class HomeController : Controller
         return View();
     }
 
-    public IActionResult AdaugaCetatean()
-    {
-        return View();
-    }
-    public IActionResult AdaugaPubela()
-    {
-        return View();
-    }
-
-    public IActionResult AtribuirePubela()
-    {
-        ViewBag.Cetateni = new SelectList(_context.Cetatean
-            .Select(c => new { c.Id, Fullname = c.Name + " " + c.Surname})
-            .ToList(), "Id", "Fullname");
-        ViewBag.Pubele = new SelectList(_context.Pubela
-            .Where(p => !_context.PubeleCetateni.Any(pc => pc.TagId == p.TagId))
-            .ToList(),"TagId", "TagId");
-
-        return View();
-    }
-
     public IActionResult InregistreazaColectare()
     {
         ViewBag.Pubele = new SelectList(_context.Pubela.ToList(), "TagId", "TagId");
         return View();
-    }
-
-    [HttpPost]
-    public IActionResult AdaugaCetatean(Cetatean cetatean)
-    {
-        if (ModelState.IsValid)
-        {
-            _context.Cetatean.Add(cetatean);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
-        return View(cetatean);
-    }
-
-    [HttpPost]
-    public IActionResult AdaugaPubela (Pubela pubela)
-    {
-        if (ModelState.IsValid)
-        {
-            _context.Pubela.Add(pubela);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
-        return View(pubela);
-    }
-
-    [HttpPost]
-    public IActionResult AtribuirePubela(PubeleCetateni model)
-    {
-        if (ModelState.IsValid)
-        {
-            var existaPubelaLaAdresa = _context.PubeleCetateni
-                .Any(pc => pc.Address == model.Address);
-
-            if (existaPubelaLaAdresa)
-            {
-                ModelState.AddModelError("Address", "There is already a dumpster assigned to this address");
-
-                ViewBag.Cetateni = new SelectList(_context.Cetatean
-                    .Select(c => new { c.Id, Fullname = c.Name + " " + c.Surname })
-                    .ToList(), "Id", "Fullname");
-
-                ViewBag.Pubele = new SelectList(_context.Pubela
-                    .Where(p => !_context.PubeleCetateni.Any(pc => pc.TagId == p.TagId))
-                    .ToList(), "TagId", "TagId");
-
-                return View(model);
-            }
-
-            _context.PubeleCetateni.Add(model);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        ViewBag.Cetateni = new SelectList(_context.Cetatean
-           .Select(c => new { c.Id, Fullname = c.Name + " " + c.Surname })
-           .ToList(), "Id", "Fullname");
-
-        ViewBag.Pubele = new SelectList(_context.Pubela
-            .Where(p => !_context.PubeleCetateni.Any(pc => pc.TagId == p.TagId))
-            .ToList(), "TagId", "TagId");
-
-        return View(model);
     }
 
     [HttpPost]
@@ -148,31 +63,6 @@ public class HomeController : Controller
 
         ViewBag.Pubele = new SelectList(_context.Pubela.ToList(), "TagId", "TagId");
         return View(colectare);
-    }
-
-    public IActionResult ColectariCetatean()
-    {
-        var cetateni = _context.Cetatean.ToList();
-        var colectariCetateni = cetateni.Select(cetatean => new ColectariCetateanViewModel
-        {
-            CitizenId = cetatean.Id,
-            CitizenName = cetatean.Name,
-            CitizenSurname = cetatean.Surname,
-            Colectari = _context.PubeleCetateni
-            .Where(pc => pc.IdCetatean == cetatean.Id) 
-            .Join(
-                _context.Colectare, 
-                pc => pc.TagId,     
-                c => c.TagId,
-                (pc, c) => new ColectareViewModel
-                {
-                    TagId = c.TagId,
-                    CollectionTime = c.CollectionTime,
-                    Address = c.Address
-                })
-            .ToList()
-        }).ToList();
-        return View(colectariCetateni);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
