@@ -2,7 +2,7 @@
 
 namespace Colectare_pubela.Models
 {
-    public class DataStructure
+    public class Colectare
     {
         [Key]
         public Guid Id { get; set; } = Guid.NewGuid();
@@ -13,5 +13,8 @@ namespace Colectare_pubela.Models
         [Required]
         public DateTime CollectionTime { get; set; }
 
+        [Required]
+        [StringLength(50)]
+        public string Address { get; set; }
     }
 }

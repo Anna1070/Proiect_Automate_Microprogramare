@@ -1,8 +1,75 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model Colectare_pubela.Models.Cetatean
+
+@{
+    ViewData["Title"] = "Dashboard";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="container-fluid mt-4" style="height: 100vh;">
+    <div class="row" style="height: 20%;">
+        <div class="col-12 d-flex justify-content-center align-items-center bg-primary text-white p-3 rounded shadow">
+            <h2>Welcome Admin !</h2>
+        </div>
+    </div>
+
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="card-title mb-0">Admin Actions</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="d-grid gap-3">
+                            <button onclick="location.href='@Url.Action("AdaugaCetatean", "Cetateni")'" class="btn btn-primary btn-lg hover-dark shadow">
+                                Add Citizen
+                            </button>
+
+                            <button onclick="location.href='@Url.Action("AdaugaPubela", "Pubele")'" class="btn btn-secondary btn-lg hover-dark shadow">
+                                Add Dumpster
+                            </button>
+
+                            <button onclick="location.href='@Url.Action("AtribuirePubela", "Pubele")'" class="btn btn-success btn-lg hover-dark shadow">
+                                Assign Dumpster
+                            </button>
+
+                            <button onclick="location.href='@Url.Action("InregistreazaColectare", "Home")'" class="btn btn-warning btn-lg hover-dark shadow">
+                                Register Collection
+                            </button>
+
+                            <button onclick="location.href='@Url.Action("ColectariCetatean", "Cetateni")'" class="btn btn-info btn-lg hover-dark shadow">
+                                See Citizen's Collections
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-danger text-white">
+                        <h4 class="card-title mb-0">Alerts</h4>
+                    </div>
+                    <div class="card-body">
+                        @if (TempData["AlertMessage"] != null)
+                        {
+                            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                                <strong>Alert!</strong> @TempData["AlertMessage"]
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-center text-muted">No alerts at the moment.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

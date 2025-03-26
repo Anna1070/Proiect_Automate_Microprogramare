@@ -1,0 +1,31 @@
+﻿@model Colectare_pubela.Models.Pubela
+
+@{
+    ViewData["Title"] = "Add Dumpster";
+}
+
+<div class="container vh-100 d-flex align-items-center justify-content-center">
+    <div class="row w-100 justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-12 bg-light shadow rounded p-5" style="min-height: 70vh;">
+            <h2 class="text-center mb-4">Add a new dumpster</h2>
+
+            <form asp-action="AdaugaPubela" method="post" class="container p-4">
+                <div class="mb-4">
+                    <label asp-for="TagId" class="form-label">Dumpster tag</label>
+                    <input asp-for="TagId" class="form-control" placeholder="Enter dumpster tag" />
+                    <span asp-validation-for="TagId" class="text-danger"></span>
+                </div>
+
+                <div class="d-flex justify-content-center mt-5">
+                    <button type="submit" class="btn btn-primary w-50 p-2">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
