@@ -3,6 +3,7 @@ using System;
 using Colectare_pubela.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,14 +11,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Colectare_pubela.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250321163853_AddressAddedToColectari")]
+    partial class AddressAddedToColectari
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
 
-            modelBuilder.Entity("Colectare_pubela.Models.Cetatean", b =>
+            modelBuilder.Entity("Colectare_pubela.Models.Cetateni", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -47,7 +50,7 @@ namespace Colectare_pubela.Migrations
                     b.ToTable("Cetateni");
                 });
 
-            modelBuilder.Entity("Colectare_pubela.Models.Colectare", b =>
+            modelBuilder.Entity("Colectare_pubela.Models.Colectari", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -78,7 +81,7 @@ namespace Colectare_pubela.Migrations
 
                     b.HasKey("TagId");
 
-                    b.ToTable("Pubele");
+                    b.ToTable("Pubela");
                 });
 
             modelBuilder.Entity("Colectare_pubela.Models.PubeleCetateni", b =>
@@ -110,7 +113,7 @@ namespace Colectare_pubela.Migrations
 
             modelBuilder.Entity("Colectare_pubela.Models.PubeleCetateni", b =>
                 {
-                    b.HasOne("Colectare_pubela.Models.Cetatean", "Cetatean")
+                    b.HasOne("Colectare_pubela.Models.Cetateni", "Cetatean")
                         .WithMany()
                         .HasForeignKey("IdCetatean")
                         .OnDelete(DeleteBehavior.Cascade)

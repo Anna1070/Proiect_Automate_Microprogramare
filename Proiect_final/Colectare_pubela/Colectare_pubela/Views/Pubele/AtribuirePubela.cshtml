@@ -1,0 +1,47 @@
+﻿@model Colectare_pubela.Models.PubeleCetateni
+
+@{
+    ViewData["Title"] = "Assign dumpster";
+}
+
+<div class="container vh-100 d-flex align-items-center justify-content-center">
+    <div class="row w-100 justify-content-center">
+        <div class="col-lg-6 col-md-8 col-sm-12 bg-light shadow rounded p-5" style="min-height: 70vh;">
+            <h2 class="text-center mb-4">Assgin a dumpter to someone</h2>
+
+            <form asp-action="AtribuirePubela" method="post" class="container p-4">
+                <div class="mb-4">
+                    <label for="IdCetatean" class="form-label">Select Citizen</label>
+                    <select asp-for="IdCetatean" asp-items="ViewBag.Cetateni" class="form-control">
+                        <option value="">-- Select Citizen --</option>
+                    </select>
+                    <span asp-validation-for="IdCetatean" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label for="TagId" class="form-label">Select Dumpster</label>
+                    <select asp-for="TagId" asp-items="ViewBag.Pubele" class="form-control">
+                        <option value="">-- Select Dumpster --</option>
+                    </select>
+                    <span asp-validation-for="TagId" class="text-danger"></span>
+                </div>
+
+                <div class="mb-4">
+                    <label asp-for="Address" class="form-label"></label>
+                    <input asp-for="Address" class="form-control" placeholder="Enter user's address" />
+                    <span asp-validation-for="Address" class="text-danger"></span>    
+                </div>
+
+                <div class="d-flex justify-content-center mt-5">
+                    <button type="submit" class="btn btn-primary w-50 p-2">Assign</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
