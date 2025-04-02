@@ -3,6 +3,7 @@ using System;
 using Colectare_pubela.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,18 +11,20 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Colectare_pubela.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250402151846_UpdateColectare")]
+    partial class UpdateColectare
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.3");
 
             modelBuilder.Entity("Colectare_pubela.Models.Cetatean", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("CNP")
                         .IsRequired()
@@ -49,9 +52,9 @@ namespace Colectare_pubela.Migrations
 
             modelBuilder.Entity("Colectare_pubela.Models.Colectare", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER")
+                        .HasColumnType("TEXT")
                         .HasDefaultValueSql("NEWID()");
 
                     b.Property<string>("Address")
@@ -91,17 +94,17 @@ namespace Colectare_pubela.Migrations
 
             modelBuilder.Entity("Colectare_pubela.Models.PubeleCetateni", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Address")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("IdCetatean")
-                        .HasColumnType("INTEGER");
+                    b.Property<Guid>("IdCetatean")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("TagId")
                         .IsRequired()
