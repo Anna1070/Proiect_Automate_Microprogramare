@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "View Map";
+}
+
+<div class="container text-center mt-4">
+    <h2 class="text-center text-primary my-4" style="text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
+        Collections from @ViewData["FormattedDate"]
+    </h2>
+    <div id="map-data" data-colectari="@ViewData["Colectari"]"></div>
+    <div id="alert-container" class="container mt-4"></div>
+    <div id="map" class ="w-100" style="height: 600px;"></div>
+</div>
+
+@section Scripts {
+    <script>
+        let mapHtmlElement = document.getElementById('map-data');
+        let mapData = JSON.parse(mapHtmlElement.getAttribute('data-colectari'));
+        let alertContainer = document.getElementById('alert-container');
+        let coordinatesOfTheCity = [45.8100, 24.1500];
+        let map = L.map('map').setView(coordinatesOfTheCity, 15);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+                   { attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+
+        if (!mapData || mapData.length === 0) {
+            alertContainer.innerHTML = `
+                <div class="alert alert-info text-center fw-bold">
+                    There are no collections for this date.
+                </div>
+            `;
+        } else {
+            let coordinatesArray = []; 
+            mapData.forEach(point => {
+                let latitude = parseFloat(point.Latitudine);
+                let longitude = parseFloat(point.Longitudine);
+
+                if (!isNaN(latitude) && !isNaN(longitude)) {
+                    L.circleMarker([latitude, longitude], {
+                        color: 'red',        
+                        radius: 3,           
+                        fillColor: 'red',    
+                        fillOpacity: 1
+                    }).addTo(map).bindPopup(`Coordinates: ${latitude}, ${longitude}`);
+
+                    coordinatesArray.push([latitude, longitude]);
+                }
+            });
+            if (coordinatesArray.length > 0) {
+                map.fitBounds(coordinatesArray);
+            }
+        }
+    </script>
+}
