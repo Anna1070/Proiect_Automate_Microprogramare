@@ -5,7 +5,7 @@ namespace Colectare_pubela.Models
     public class Cetatean
     {
         [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
 
         [Required(ErrorMessage = "Name cannot be empty!")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "Name must contain at least 2 characters.")]

@@ -6,7 +6,7 @@ namespace Colectare_pubela.Models
     public class PubeleCetateni 
     {
         [Key]
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public int Id { get; set; }
 
        //[Required]
        [ForeignKey("Pubela")]
@@ -15,7 +15,7 @@ namespace Colectare_pubela.Models
 
         //[Required]
         [ForeignKey("Cetatean")]
-        public Guid IdCetatean { get; set; }
+        public int IdCetatean { get; set; }
         public Cetatean? Cetatean { get; set; }
 
         [Required]

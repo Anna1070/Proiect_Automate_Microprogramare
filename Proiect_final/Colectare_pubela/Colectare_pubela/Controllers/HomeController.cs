@@ -19,55 +19,58 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
+        VerificareEroriColectari();
         return View();
-    }
-
-    public IActionResult InregistreazaColectare()
-    {
-        ViewBag.Pubele = new SelectList(_context.Pubele.ToList(), "TagId", "TagId");
-        return View();
-    }
-
-    [HttpPost]
-    public IActionResult InregistreazaColectare(Colectare colectare)
-    {
-        if (ModelState.IsValid)
-        {
-            var pubelaAsignata = _context.PubeleCetateni
-             .FirstOrDefault(pc => pc.TagId == colectare.TagId);
-
-            if (pubelaAsignata == null)
-            {
-                ModelState.AddModelError("Address", "Dumpster not assigned to any address.");
-                ViewBag.Pubele = new SelectList(_context.Pubele.ToList(), "TagId", "TagId");
-                return View(colectare);
-            }
-
-            if (pubelaAsignata.Address != colectare.Address)
-            {
-                var alerta = new
-                {
-                    TagId = colectare.TagId,
-                    ColectareAddress = colectare.Address,
-                    ContractAddress = pubelaAsignata.Address,
-                    CollectionTime = colectare.CollectionTime
-                };
-
-                TempData["AlertMessage"] = $"Alert: Dumpster with Tag {alerta.TagId} was collected from {alerta.ColectareAddress} (expected: {alerta.ContractAddress}) at {alerta.CollectionTime}.";
-            }
-
-            _context.Colectari.Add(colectare);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        ViewBag.Pubele = new SelectList(_context.Pubele.ToList(), "TagId", "TagId");
-        return View(colectare);
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+    }
+
+    public void VerificareEroriColectari()
+    {
+        var colectariDb = _context.Colectari.ToList();
+        var pubeleDb = _context.Pubele.ToList();
+        var pubeleCetateniDb = _context.PubeleCetateni.ToList();
+
+        List<string> errorMessages = new List<string>();
+
+        foreach (var colectare in colectariDb)
+        {
+            bool pubelaExista = pubeleDb.Any(pubela => pubela.TagId == colectare.TagId);
+            var pubelaCorecta = pubeleCetateniDb.FirstOrDefault(pubela => pubela.TagId == colectare.TagId);
+            bool adresaCorecta = false;
+
+            if (pubelaCorecta != null)
+            {
+                if (pubelaCorecta.Address == colectare.Address)
+                {
+                    adresaCorecta = true;
+                }
+            }
+
+            if (!pubelaExista)
+            {
+                errorMessages.Add($"Dumpster with Tag ID {colectare.TagId} (Entry {colectare.Id}) is not registered.");
+            }
+            else if (!adresaCorecta)
+            {
+                errorMessages.Add($"Dumpster with Tag ID {colectare.TagId} (Entry {colectare.Id}) was collected from an incorrect address.");
+            }
+        }
+
+        if (errorMessages.Any())
+        {
+            if (errorMessages.Count == 1)
+            {
+                TempData["AlertMessage"] = errorMessages.First();
+            }
+            else
+            {
+                TempData["AlertMessage"] = "Multiple errors found in the collection history!";
+            }
+        }
     }
 }
