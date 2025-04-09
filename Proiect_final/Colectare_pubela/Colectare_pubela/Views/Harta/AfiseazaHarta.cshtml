@@ -1,0 +1,93 @@
+﻿@{
+    ViewData["Title"] = "View Map";
+}
+
+<div class="container text-center mt-4">
+    <h2 class="text-center text-primary my-4" style="text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);">
+        Collections from @ViewData["FormattedDate"]
+    </h2>
+    <div id="map-data" data-colectari="@ViewData["Colectari"]"></div>
+    <div id="alert-container" class="container mt-4"></div>
+    <div id="map" class ="w-100" style="height: 600px;"></div>
+</div>
+
+@section Scripts {
+    <script>
+        function drawStartStopMarker(coordinates, popupMessage, map) {
+            L.circleMarker(coordinates, {
+                color: 'blue',
+                radius: 10,
+                fillColor: 'blue',
+                fillOpacity: 1
+            }).addTo(map).bindPopup(popupMessage);
+
+            let labelIcon = L.divIcon({
+                className: 'start-stop-label',
+                html: `<span style="font-size: 12px; color: white; font-weight: bold; text-align: center; padding: 2px; border-radius: 5px; background-color: rgba(0, 0, 0, 0.5);">
+                        ${popupMessage}</span>`,
+                iconSize: [30, 30], 
+                iconAnchor: [15, 15] 
+            });
+
+            L.marker(coordinates, { icon: labelIcon }).addTo(map).bindPopup(`Coordinates: ${coordinates[0]}, ${coordinates[1]}`);
+        }
+
+        function drawCollectionPointMarker(latitude, longitude, index, map) {
+            L.circleMarker([latitude, longitude], {
+                color: 'red',
+                radius: 10,
+                fillColor: 'red',
+                fillOpacity: 1
+            }).addTo(map);
+
+            let labelIcon = L.divIcon({
+                className: 'marker-label',
+                html: `<span style="padding:0; font-size: 12px; color: white; font-weight: bold; text-align: center;">${index}</span>`,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+
+            L.marker([latitude, longitude], { icon: labelIcon }).addTo(map).bindPopup(`${index}. Coordinates: ${latitude}, ${longitude}`);
+        }
+
+        let mapHtmlElement = document.getElementById('map-data');
+        let mapData = JSON.parse(mapHtmlElement.getAttribute('data-colectari'));
+        let alertContainer = document.getElementById('alert-container');
+        let coordinatesOfTheCity = [45.8100, 24.1500];
+        let coordinatesOfStart = [45.7315361, 24.1779393];
+        let coordinatesOfStop = [45.7877059, 24.0247875];
+        let map = L.map('map').setView(coordinatesOfTheCity, 17);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', 
+                   { attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+
+        drawStartStopMarker(coordinatesOfStart,'START', map);
+        drawStartStopMarker(coordinatesOfStop, 'STOP', map);
+       
+        if (!mapData || mapData.length === 0) {
+            alertContainer.innerHTML = `
+                <div class="alert alert-info text-center fw-bold">
+                    There are no collections for this date.
+                </div>
+            `;
+        } else {
+            let coordinatesArray = [coordinatesOfStart];
+            let index = 1;
+
+            mapData.forEach(point => {
+                let latitude = parseFloat(point.Latitudine);
+                let longitude = parseFloat(point.Longitudine);
+
+                if (!isNaN(latitude) && !isNaN(longitude)) {
+                    drawCollectionPointMarker(latitude, longitude, index, map);
+                    coordinatesArray.push([latitude, longitude]);
+                    index++;
+                }
+            });
+            coordinatesArray.push(coordinatesOfStop);
+
+            if (coordinatesArray.length > 0) {
+                map.fitBounds(coordinatesArray);
+            }
+        }
+    </script>
+}
