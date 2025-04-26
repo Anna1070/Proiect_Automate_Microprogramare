@@ -22,7 +22,8 @@ namespace Colectare_pubela.Controllers
                                               .Select(c => new
                                               {
                                                   Latitudine = !string.IsNullOrEmpty(c.Latitudine) ? c.Latitudine : "0",
-                                                  Longitudine = !string.IsNullOrEmpty(c.Longitudine) ? c.Longitudine : "0"
+                                                  Longitudine = !string.IsNullOrEmpty(c.Longitudine) ? c.Longitudine : "0",
+                                                  Address = c.Address
                                               })
                                               .ToList();
             ViewData["Colectari"] = System.Text.Json.JsonSerializer.Serialize(colectari);
