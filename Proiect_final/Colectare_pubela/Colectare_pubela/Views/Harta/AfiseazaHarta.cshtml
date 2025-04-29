@@ -11,6 +11,17 @@
     <div id="map-data" data-colectari="@ViewData["Colectari"]"></div>
     <div id="alert-container" class="container mt-3"></div>
     <div id="map" class ="w-100" style="height: 600px;"></div>
+
+    <div class="alert alert-info mt-4">
+        <b>Default route distance:</b> @ViewData["DistantaNormala"] km<br />
+        <b>Optimized route distance:</b> @ViewData["DistantaOptimizata"] km<br />
+        <b>Driving estimated time:</b> @ViewData["TimpCondusOptimizat"] minutes<br />
+        <b>Bin collection time:</b> @ViewData["TimpColectare"] minutes<br />
+        <b><u>Total time:</u></b> <b>@ViewData["TimpTotal"] minutes</b><br /><br />
+
+        <b>Distance difference (normal - optimized):</b> @ViewData["DiferentaDistanta"] km
+    </div>
+
 </div>
 
 @section Scripts {
@@ -112,7 +123,7 @@
                 map.fitBounds(coordinatesArray);
             }
 
-             L.Routing.control({
+            L.Routing.control({
                 waypoints: coordinatesArray.map(coord => L.latLng(coord[0], coord[1])),
                 routeWhileDragging: false,
                 draggableWaypoints: false,

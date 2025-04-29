@@ -31,8 +31,23 @@ namespace Colectare_pubela.Controllers
             string solutionDirectory = Path.GetDirectoryName(Directory.GetCurrentDirectory());
             string filePath = Path.Combine(solutionDirectory, "Traseu_2_SB_77_ULB.xlsx");
             var matriceaDistantelor = CitesteMatriceaDistantelor(filePath);
+            var rutaNormala = Enumerable.Range(0, matriceaDistantelor.GetLength(0)).ToList();
             var rutaOptimizata = GasesteRutaOptimizata(matriceaDistantelor);
+
+            double distantaNormala = CalculeazaDistantaTotala(rutaNormala, matriceaDistantelor);
+            double distantaOptimizata = CalculeazaDistantaTotala(rutaOptimizata, matriceaDistantelor);
+
+            int timpCondusOptimizat = (int)Math.Round((distantaOptimizata / 35.0) * 60);
+            int timpColectare = rutaOptimizata.Count * 1;
+            int timpTotalOptimizat = timpCondusOptimizat + timpColectare;
+
             ViewData["RutaOptimizata"] = System.Text.Json.JsonSerializer.Serialize(rutaOptimizata);
+            ViewData["DistantaNormala"] = distantaNormala.ToString("0.00");
+            ViewData["DistantaOptimizata"] = distantaOptimizata.ToString("0.00");
+            ViewData["DiferentaDistanta"] = (distantaNormala - distantaOptimizata).ToString("0.00");
+            ViewData["TimpCondusOptimizat"] = timpCondusOptimizat;
+            ViewData["TimpColectare"] = timpColectare;
+            ViewData["TimpTotal"] = timpTotalOptimizat;
 
             return View();
         }
@@ -108,6 +123,18 @@ namespace Colectare_pubela.Controllers
             }
 
             return ruta;
+        }
+
+        private double CalculeazaDistantaTotala(List<int> ruta, double[,] matrice)
+        {
+            double distanta = 0;
+            for (int i = 0; i < ruta.Count - 1; i++)
+            {
+                double d = matrice[ruta[i], ruta[i + 1]];
+                if (d != double.MaxValue)
+                    distanta += d / 1000.0;
+            }
+            return distanta;
         }
     }
 }
