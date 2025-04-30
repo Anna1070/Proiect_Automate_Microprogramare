@@ -27,25 +27,25 @@ namespace Colectare_pubela.Controllers
                                               })
                                               .ToList();
 
-            var colectariCuStartStop = new List<dynamic>();
+            //var colectariCuStartStop = new List<dynamic>();
 
-            colectariCuStartStop.Add(new
-            {
-                Latitudine = "45.7315361",
-                Longitudine = "24.1779393",
-                Address = "Strada Șelimbărului 90, Cisnădie, Romania"
-            });
+            //colectariCuStartStop.Add(new
+            //{
+            //    Latitudine = "45.7315361",
+            //    Longitudine = "24.1779393",
+            //    Address = "Strada Șelimbărului 90, Cisnădie, Romania"
+            //});
 
-            colectariCuStartStop.AddRange(colectari);
+            //colectariCuStartStop.AddRange(colectari);
 
-            colectariCuStartStop.Add(new
-            {
-                Latitudine = "45.7877059",
-                Longitudine = "24.0247875",
-                Address = "DN1 FN, Cristian 557085"
-            });
+            //colectariCuStartStop.Add(new
+            //{
+            //    Latitudine = "45.7877059",
+            //    Longitudine = "24.0247875",
+            //    Address = "DN1 FN, Cristian 557085"
+            //});
 
-            ViewData["Colectari"] = System.Text.Json.JsonSerializer.Serialize(colectariCuStartStop);
+            ViewData["Colectari"] = System.Text.Json.JsonSerializer.Serialize(colectari);
 
             string solutionDirectory = Path.GetDirectoryName(Directory.GetCurrentDirectory());
             string filePath = Path.Combine(solutionDirectory, "Traseu_2_SB_77_ULB.xlsx");
