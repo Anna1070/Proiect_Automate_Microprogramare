@@ -8,7 +8,7 @@
 #define SS_PIN D4
 
 //10.14.10.39
-#define SERVER_IP "10.14.11.101:5154"
+#define SERVER_IP "10.14.11.74:5154"
 #ifndef STASSID
 #define STASSID "OMiLAB"
 #define STAPSK "digifofulbs"
@@ -90,6 +90,9 @@ void loop() {
   char timeStr[25];
   strftime(timeStr, sizeof(timeStr), "%Y-%m-%dT%H:%M:%S", localtime(&now));
   String collectionTime = String(timeStr);
+  String adresa = "";
+  String lat = "";
+  String longi = "";
 
   Serial.print("Collection Time: ");
   Serial.println(collectionTime);
@@ -107,7 +110,7 @@ void loop() {
 
     Serial.print("[HTTP] POST...\n");
     // start connection and send HTTP header and body
-    int httpCode = http.POST("{\"TagId\":\"" + tag + "\", \"CollectionTime\":\"" + collectionTime + "\"}");
+    int httpCode = http.POST("{\"TagId\":\"" + tag + "\", \"CollectionTime\":\"" + collectionTime + "\", \"Address\":\"" + adresa + "\", \"Latitudine\":\"" + lat + "\", \"Longitudine\":\"" + longi + "\"}");
 
     // httpCode will be negative on error
     if (httpCode > 0) {

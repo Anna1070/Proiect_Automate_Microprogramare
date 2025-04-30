@@ -56,6 +56,12 @@ namespace Colectare_pubela.Controllers
             double distantaNormala = CalculeazaDistantaTotala(rutaNormala, matriceaDistantelor);
             double distantaOptimizata = CalculeazaDistantaTotala(rutaOptimizata, matriceaDistantelor);
 
+            distantaOptimizata += 16.73;
+            distantaOptimizata += 15.55;
+
+            distantaNormala += 15.2;
+            distantaNormala += 10.162;
+
             int timpCondusOptimizat = (int)Math.Round((distantaOptimizata / 35.0) * 60);
             int timpColectare = rutaOptimizata.Count * 1;
             int timpTotalOptimizat = timpCondusOptimizat + timpColectare;
